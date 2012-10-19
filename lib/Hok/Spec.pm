@@ -7,7 +7,7 @@ use Hok;
 use Hok::Expect;
 use Carp ();
 
-our @EXPORT = qw/expect describe/;
+our @EXPORT = qw/expect describe runtests/;
 our $EXECUTING;
 
 my @blocks;
@@ -27,13 +27,19 @@ sub expect {
     Hok::Expect->new($stuff);
 }
 
-END {
+sub runtests {
     local $EXECUTING = 1;
-    for my $block (@blocks) {
+    while (my $block = shift @blocks) {
         my ($name, $code) = @$block;
         Hok->context->run_subtest($name, $code);
     }
     Hok->context->done_testing;
+}
+
+END {
+    if (@blocks) {
+        runtests();
+    }
 }
 
 1;
