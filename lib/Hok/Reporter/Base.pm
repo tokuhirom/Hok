@@ -31,9 +31,32 @@ sub print :method {
     CORE::print {$self->{outfh}} @_;
 }
 
+sub note :method {
+    my $self = shift;
+    $self->_print_comment($self->outfh, @_);
+}
+
 sub diag :method {
     my $self = shift;
-    CORE::print {$self->{errfh}} "# " . $_[0] . "\n";
+    $self->_print_comment($self->errfh, @_);
+}
+
+# ref. Test::Builder::_print_comment
+sub _print_comment {
+    my ($self, $fh, @msgs) = @_;
+    return unless @msgs;
+
+    # Prevent printing headers when compiling (i.e. -c)
+    return if $^C;
+
+    # Smash args together like print does.
+    # Convert undef to 'undef' so its readable.
+    my $msg = join '', map { defined($_) ? $_ : 'undef' } @msgs;
+
+    # Escape the beginning, _print will take care of the rest.
+    $msg =~ s/^/# /;
+
+    CORE::print {$fh} $msg . "\n";
 }
 
 sub init { } # implement in child class

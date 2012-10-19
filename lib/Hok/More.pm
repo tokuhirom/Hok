@@ -9,11 +9,10 @@ use Class::Load ();
 
 use parent qw/Exporter/;
 
-our @EXPORT = qw/subtest ok done_testing p is use_ok like unlike cmp_ok/;
+our @EXPORT = qw/subtest ok done_testing p is use_ok like unlike cmp_ok note diag/;
 
 # TODO:
 # difflet
-# note
 
 # Test::More functions:
 #   ok use_ok require_ok
@@ -45,6 +44,9 @@ sub use_ok {
         Hok->context->diag($err) if $err;
     }
 }
+
+sub diag { Hok->context->diag(@_) }
+sub note { Hok->context->note(@_) }
 
 sub ok {
     my ($stuff, $reason) = @_;

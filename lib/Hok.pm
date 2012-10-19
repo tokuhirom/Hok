@@ -106,6 +106,11 @@ sub diag {
     $self->reporter->diag(@_);
 }
 
+sub note {
+    my $self = shift;
+    $self->reporter->note(@_);
+}
+
 sub cmp_ok {
     my ($self, $a, $op, $b, $msg) = @_;
 
