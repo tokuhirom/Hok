@@ -3,8 +3,6 @@ Hok
 
 Yet another testing framework for Perl5, inpired from mocha.
 
-![screen shot](http://gyazo.64p.org/image/2996f36aba176ad2d0d9c6734eb45476.png)
-
 Status of this module
 ---------------------
 
@@ -35,6 +33,21 @@ Synopsis
         expect('hige')->equal('hige');
     };
     expect('hige')->equal('hage');
+
+Reporters
+---------
+
+### Dot style
+
+!(Dot)[http://gyazo.64p.org/image/471552296a03d8cd433f67162bc7bb91.png]
+
+### Spec style
+
+!(Spec)[http://gyazo.64p.org/image/f505941db6888dbd16fbe0f1ddebbd42.png]
+
+### TAP style
+
+!(TAP)[http://gyazo.64p.org/image/d1ec8097257b9204b880c818cc708b9f.png]
 
 Features
 --------
