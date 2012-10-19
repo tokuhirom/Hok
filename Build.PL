@@ -18,7 +18,7 @@ my $build = Module::Build->new(
         # 'Plack'                         => '0.9949',
         'Term::ANSIColor' => 0,
         'TAP::Harness' => '2.03',
-        'Class::Accessor::Fast' => 0,
+        'Class::Accessor::Lite' => 0,
         'Module::Load' => 0,
     },
 

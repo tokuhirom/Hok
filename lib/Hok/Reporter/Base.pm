@@ -3,8 +3,6 @@ use strict;
 use warnings;
 use utf8;
 
-use parent qw/Class::Accessor::Fast/;
-
 use Class::Accessor::Lite (
     rw => [qw/outfh errfh/],
 );
