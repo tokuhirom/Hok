@@ -33,6 +33,7 @@ END {
         my ($name, $code) = @$block;
         Hok->context->run_subtest($name, $code);
     }
+    Hok->context->done_testing;
 }
 
 1;

@@ -8,8 +8,7 @@ use Module::Load ();
 
 # plagger-ish context
 our $CONTEXT;
-sub context { $CONTEXT }
-$CONTEXT = Hok->new();
+sub context { $CONTEXT ||= Hok->new() }
 
 sub new {
     my $class = shift;
@@ -36,6 +35,13 @@ sub new {
     return $self;
 }
 
+sub bootstrap {
+    my $class = shift;
+    my $self = $class->new(@_);
+    $CONTEXT = $self;
+    $self;
+}
+
 sub reporter { shift->{reporter} }
 
 sub run_subtest {
@@ -50,6 +56,16 @@ sub run_subtest {
 sub depth {
     my $self = shift;
     0+@{$self->{blocks}};
+}
+
+sub ok {
+    my $self = shift;
+    $self->reporter->ok(@_);
+}
+
+sub done_testing {
+    my $self = shift;
+    $self->reporter->finalize();
 }
 
 1;

@@ -48,6 +48,11 @@ Reporters
 
 ![TAP](http://gyazo.64p.org/image/d1ec8097257b9204b880c818cc708b9f.png)
 
+TODO
+----
+
+  * more testing functions
+
 Features
 --------
 

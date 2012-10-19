@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use utf8;
 use Cwd;
+use Data::Dumper;
 
 # ref. https://github.com/cho45/Test-Name-FromLine/pull/2
 our $BASE_DIR = getcwd();
@@ -28,6 +29,11 @@ our $BASE_DIR = getcwd();
         }
         return undef;
     }
+}
+
+sub p($) {
+    local $Data::Dumper::Terse = 1;
+    Dumper($_[0]);
 }
 
 1;
