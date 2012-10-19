@@ -8,7 +8,7 @@ use Hok;
 
 use parent qw/Exporter/;
 
-our @EXPORT = qw/subtest ok done_testing p/;
+our @EXPORT = qw/subtest ok done_testing p is/;
 
 # TODO:
 # use_ok
@@ -41,7 +41,12 @@ sub subtest {
 
 sub ok {
     my ($stuff, $reason) = @_;
-    Hok->context->reporter->ok($stuff, $reason);
+    Hok->context->ok($stuff, $reason);
+}
+
+sub is($$;$) {
+    my ($got, $expected, $name) = @_;
+    Hok->context->is($got, $expected, $name);
 }
 
 sub done_testing() {

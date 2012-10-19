@@ -63,6 +63,23 @@ sub ok {
     $self->reporter->ok(@_);
 }
 
+sub is {
+    my ($self, $got, $expect, $msg) = @_;
+
+    # see Test::Builder::is_eq
+    if (!defined $got || !defined $expect) {
+        # undef only matches undef and nothing else
+        my $test = !defined $got && !defined $expect;
+
+        Hok->context->reporter->ok($test, $msg);
+        return $test;
+    } else {
+        my $test = $got eq $expect;
+        Hok->context->reporter->ok($test, $msg);
+        return $test;
+    }
+}
+
 sub done_testing {
     my $self = shift;
     $self->reporter->finalize();
