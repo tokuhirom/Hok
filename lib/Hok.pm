@@ -80,6 +80,20 @@ sub is {
     }
 }
 
+sub like {
+    my ($self, $got, $expect, $msg) = @_;
+    my $test = $got =~ $expect;
+    Hok->context->reporter->ok($test, $msg);
+    return $test;
+}
+
+sub unlike {
+    my ($self, $got, $expect, $msg) = @_;
+    my $test = $got !~ $expect;
+    Hok->context->reporter->ok($test, $msg);
+    return $test;
+}
+
 sub diag {
     my $self = shift;
     $self->reporter->diag(@_);

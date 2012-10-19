@@ -12,8 +12,10 @@ my $hok = Hok->bootstrap(
 {
     package sandbox;
     use Hok::More;
-    ok 1, "Good";
-    ok 0, "Bad";
+    like 'hoge', qr/h.ge/;
+    like 'poge', qr/h.ge/;
+    unlike 'hige', qr/h.ge/;
+    unlike 'pige', qr/h.ge/;
     done_testing;
 }
 Test::More::is_deeply(
@@ -21,13 +23,21 @@ Test::More::is_deeply(
     [
         [
             {
-                'message' => 'Good',
+                'message' => undef,
                 'result'  => 1
             },
             {
-                'message' => 'Bad',
+                'message' => undef,
                 'result'  => 0
-            }
+            },
+            {
+                'message' => undef,
+                'result'  => 0
+            },
+            {
+                'message' => undef,
+                'result'  => 1
+            },
         ]
     ]
 ) or Test::More::note(Dumper($hok->reporter->result));

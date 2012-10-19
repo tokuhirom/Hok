@@ -9,7 +9,7 @@ use Class::Load ();
 
 use parent qw/Exporter/;
 
-our @EXPORT = qw/subtest ok done_testing p is use_ok/;
+our @EXPORT = qw/subtest ok done_testing p is use_ok like unlike/;
 
 # TODO:
 # use_ok
@@ -39,7 +39,6 @@ our @EXPORT = qw/subtest ok done_testing p is use_ok/;
 # like
 # unlike
 # cmp_ok
-# use_ok
 
 sub subtest {
     my ($name, $code) = @_;
@@ -60,8 +59,18 @@ sub ok {
 }
 
 sub is($$;$) {
-    my ($got, $expected, $name) = @_;
-    Hok->context->is($got, $expected, $name);
+    my ($got, $expect, $name) = @_;
+    Hok->context->is($got, $expect, $name);
+}
+
+sub like($$;$) {
+    my ($got, $expect, $name) = @_;
+    Hok->context->like($got, $expect, $name);
+}
+
+sub unlike($$;$) {
+    my ($got, $expect, $name) = @_;
+    Hok->context->unlike($got, $expect, $name);
 }
 
 sub done_testing() {
@@ -78,4 +87,8 @@ __END__
 =head1 NAME
 
 Hok::More - hok for Test::More lovers
+
+=head1 DESCRIPTION
+
+L<Test::More>-ish interface from Hok.
 
