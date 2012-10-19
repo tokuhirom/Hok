@@ -85,6 +85,27 @@ sub is {
     }
 }
 
+sub isnt {
+    my ($self, $got, $expect, $msg) = @_;
+
+    # see Test::Builder::is_eq
+    if (!defined $got || !defined $expect) {
+        # undef only matches undef and nothing else
+        my $test = !defined $got && !defined $expect;
+           $test = !$test;
+
+        Hok->context->reporter->ok($test, $msg);
+    # TODO: diag it
+        return $test;
+    } else {
+        my $test = $got eq $expect;
+           $test = !$test;
+        Hok->context->reporter->ok($test, $msg);
+    # TODO: diag it
+        return $test;
+    }
+}
+
 sub like {
     my ($self, $got, $expect, $msg) = @_;
     my $test = $got =~ $expect;

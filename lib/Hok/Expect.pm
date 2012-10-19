@@ -38,7 +38,11 @@ sub to {
 
 sub be {
     my $self = shift;
-    $self;
+    if (@_) {
+        $self->equal(@_);
+    } else {
+        $self;
+    }
 }
 
 sub have {
@@ -80,7 +84,11 @@ sub new {
 
 sub be {
     my $self = shift;
-    $self;
+    if (@_) {
+        $self->equal(@_);
+    } else {
+        $self;
+    }
 }
 
 sub have {
@@ -88,9 +96,21 @@ sub have {
     $self;
 }
 
+sub to {
+    my $self = shift;
+    $self;
+}
+
 sub ok {
     my $self = shift;
     Hok->context->ok(!$self->[0]);
+}
+
+sub equal {
+    my $self = shift;
+    my $expect = shift;
+
+    Hok->context->isnt($self->[0], $expect);
 }
 
 1;
