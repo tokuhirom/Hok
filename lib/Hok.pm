@@ -4,7 +4,34 @@ use warnings;
 use 5.010001;
 our $VERSION = '0.01';
 
+# plagger-ish context
+our $CONTEXT;
+sub context { $CONTEXT }
+$CONTEXT = Hok->new();
 
+sub new {
+    my $class = shift;
+    my %args = @_==1 ? %{$_[0]} : @_;
+
+    my $self = bless {
+        %args,
+    }, $class;
+
+    # setup reporter
+    $self->{reporter} ||= do {
+        if ($ENV{HARNESS_ACTIVE}) { # in prove
+            require Hok::Reporter::TAP;
+            Hok::Reporter::TAP->new;
+        } else {
+            require Hok::Reporter::Dot;
+            Hok::Reporter::Dot->new;
+        }
+    };
+
+    return $self;
+}
+
+sub reporter { shift->{reporter} }
 
 1;
 __END__
