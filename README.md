@@ -39,15 +39,15 @@ Reporters
 
 ### Dot style
 
-!(Dot)[http://gyazo.64p.org/image/471552296a03d8cd433f67162bc7bb91.png]
+![Dot](http://gyazo.64p.org/image/471552296a03d8cd433f67162bc7bb91.png)
 
 ### Spec style
 
-!(Spec)[http://gyazo.64p.org/image/f505941db6888dbd16fbe0f1ddebbd42.png]
+![Spec](http://gyazo.64p.org/image/f505941db6888dbd16fbe0f1ddebbd42.png)
 
 ### TAP style
 
-!(TAP)[http://gyazo.64p.org/image/d1ec8097257b9204b880c818cc708b9f.png]
+![TAP](http://gyazo.64p.org/image/d1ec8097257b9204b880c818cc708b9f.png)
 
 Features
 --------
