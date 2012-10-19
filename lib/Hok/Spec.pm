@@ -3,10 +3,8 @@ use strict;
 use warnings;
 use utf8;
 use parent qw/Exporter/;
-use Hok::Should;
 use Hok;
-use B::Hooks::EndOfScope;
-use Scope::Guard;
+use Hok::Expect;
 use Carp ();
 
 our @EXPORT = qw/expect describe/;
@@ -26,7 +24,7 @@ sub describe {
 sub expect {
     my $stuff = shift;
     Carp::croak "Do not call 'expect' function in out of describe" unless $EXECUTING;
-    Hok::Should->new($stuff);
+    Hok::Expect->new($stuff);
 }
 
 END {

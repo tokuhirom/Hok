@@ -1,4 +1,4 @@
-package Hok::Should;
+package Hok::Expect;
 use strict;
 use warnings;
 use utf8;
