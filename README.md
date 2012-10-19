@@ -52,6 +52,7 @@ TODO
 ----
 
   * more testing functions
+  * fork safe
 
 Features
 --------

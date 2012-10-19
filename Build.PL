@@ -20,6 +20,7 @@ my $build = Module::Build->new(
         'TAP::Harness' => '2.03',
         'Class::Accessor::Lite' => 0,
         'Module::Load' => 0,
+        'Class::Load' => 0,
     },
 
     no_index    => { 'directory' => [ 'inc' ] },

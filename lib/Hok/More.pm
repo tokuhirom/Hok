@@ -5,10 +5,11 @@ use utf8;
 
 use Test::Builder;
 use Hok;
+use Class::Load ();
 
 use parent qw/Exporter/;
 
-our @EXPORT = qw/subtest ok done_testing p is/;
+our @EXPORT = qw/subtest ok done_testing p is use_ok/;
 
 # TODO:
 # use_ok
@@ -34,9 +35,23 @@ our @EXPORT = qw/subtest ok done_testing p is/;
 # Test::Exceptions functions:
 #    dies_ok lives_ok throws_ok lives_and
 
+# TODO:
+# like
+# unlike
+# cmp_ok
+# use_ok
+
 sub subtest {
     my ($name, $code) = @_;
     Hok->context->run_subtest($name, $code);
+}
+
+sub use_ok {
+    for my $klass (@_) {
+        my ($ok, $err) = Class::Load::try_load_class($klass);
+        Hok->context->ok($ok, "use $klass");
+        Hok->context->diag($err) if $err;
+    }
 }
 
 sub ok {

@@ -33,6 +33,13 @@ sub finalize {
     push @{$self->{result}}, pop @{$self->{stack}};
 }
 
+sub diag :method {
+    my $self = shift;
+    push @{$self->{stack}->[-1]}, +{
+        diag => $_[0],
+    };
+}
+
 sub result {
     my $self = shift;
     $self->{result};

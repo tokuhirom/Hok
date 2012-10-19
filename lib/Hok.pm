@@ -80,6 +80,11 @@ sub is {
     }
 }
 
+sub diag {
+    my $self = shift;
+    $self->reporter->diag(@_);
+}
+
 sub done_testing {
     my $self = shift;
     $self->reporter->finalize();
