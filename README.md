@@ -32,7 +32,6 @@ Synopsis
         expect('hoge')->equal('hoge');
         expect('hige')->equal('hige');
     };
-    expect('hige')->equal('hage');
 
 Reporters
 ---------

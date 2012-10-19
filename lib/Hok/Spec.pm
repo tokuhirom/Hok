@@ -18,6 +18,5 @@ sub expect {
     Hok::Should->new($stuff);
 }
 
-
 1;
 
