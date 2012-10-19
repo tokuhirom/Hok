@@ -5,6 +5,9 @@ use 5.010001;
 our $VERSION = '0.01';
 
 use Module::Load ();
+use Carp ();
+
+our @CARP_NOT = qw(Hok::Spec Hok::More Hok::Expect);
 
 # plagger-ish context
 our $CONTEXT;
@@ -72,10 +75,12 @@ sub is {
         my $test = !defined $got && !defined $expect;
 
         Hok->context->reporter->ok($test, $msg);
+    # TODO: diag it
         return $test;
     } else {
         my $test = $got eq $expect;
         Hok->context->reporter->ok($test, $msg);
+    # TODO: diag it
         return $test;
     }
 }
@@ -84,6 +89,7 @@ sub like {
     my ($self, $got, $expect, $msg) = @_;
     my $test = $got =~ $expect;
     Hok->context->reporter->ok($test, $msg);
+    # TODO: diag it
     return $test;
 }
 
@@ -91,12 +97,34 @@ sub unlike {
     my ($self, $got, $expect, $msg) = @_;
     my $test = $got !~ $expect;
     Hok->context->reporter->ok($test, $msg);
+    # TODO: diag it
     return $test;
 }
 
 sub diag {
     my $self = shift;
     $self->reporter->diag(@_);
+}
+
+sub cmp_ok {
+    my ($self, $a, $op, $b, $msg) = @_;
+
+    my $code = +{
+        '<'  => sub { $a < $b },
+        '>'  => sub { $a > $b },
+        '>'  => sub { $a > $b },
+        '==' => sub { $a == $b },
+    }->{$op} || do {
+        local $@;
+        my $c = eval "sub { \$a $op \$b }";
+        Carp::croak $@ if $@;
+        $c;
+    };
+    my $test = $code->();
+
+    $self->reporter->ok($test, $msg);
+    # TODO: diag it
+    return $test;
 }
 
 sub done_testing {

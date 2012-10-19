@@ -9,7 +9,7 @@ use Class::Load ();
 
 use parent qw/Exporter/;
 
-our @EXPORT = qw/subtest ok done_testing p is use_ok like unlike/;
+our @EXPORT = qw/subtest ok done_testing p is use_ok like unlike cmp_ok/;
 
 # TODO:
 # use_ok
@@ -36,8 +36,6 @@ our @EXPORT = qw/subtest ok done_testing p is use_ok like unlike/;
 #    dies_ok lives_ok throws_ok lives_and
 
 # TODO:
-# like
-# unlike
 # cmp_ok
 
 sub subtest {
@@ -71,6 +69,11 @@ sub like($$;$) {
 sub unlike($$;$) {
     my ($got, $expect, $name) = @_;
     Hok->context->unlike($got, $expect, $name);
+}
+
+sub cmp_ok($$$;$) {
+    my ($a, $op, $b, $msg) = @_;
+    Hok->context->cmp_ok($a, $op, $b, $msg);
 }
 
 sub done_testing() {
