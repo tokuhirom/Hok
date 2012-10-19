@@ -31,7 +31,6 @@ Test::More::is_deeply(
                 'result'  => 0
             }
         ],
-        []
     ]
 ) or Test::More::note Dumper($hok->reporter->result);
 

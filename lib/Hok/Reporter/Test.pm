@@ -30,7 +30,9 @@ sub after_subtest {
 
 sub finalize {
     my $self = shift;
-    push @{$self->{result}}, pop @{$self->{stack}};
+    if (@{$self->{stack}} && @{$self->{stack}->[0]}) {
+        push @{$self->{result}}, pop @{$self->{stack}};
+    }
 }
 
 sub diag :method {

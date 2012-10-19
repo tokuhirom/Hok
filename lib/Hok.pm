@@ -111,6 +111,13 @@ sub note {
     $self->reporter->note(@_);
 }
 
+sub isa_ok {
+    my ($self, $obj, $type) = @_;
+    my $test = UNIVERSAL::isa($obj, $type);
+    $self->reporter->ok($test, "$obj is-a $type");
+    return $test;
+}
+
 sub cmp_ok {
     my ($self, $a, $op, $b, $msg) = @_;
 
@@ -120,6 +127,7 @@ sub cmp_ok {
         '>'  => sub { $a > $b },
         '==' => sub { $a == $b },
     }->{$op} || do {
+        ## no critic
         local $@;
         my $c = eval "sub { \$a $op \$b }";
         Carp::croak $@ if $@;
