@@ -4,7 +4,8 @@ use utf8;
 use Hok::More;
 
 subtest 'hoge' => sub {
+    ok 1;
 };
 
-done_testing;
-
+ok 2;
+ok 0;

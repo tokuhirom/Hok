@@ -16,6 +16,10 @@ my $build = Module::Build->new(
         # 'Exporter'                      => '0',
         'parent'                        => '0',
         # 'Plack'                         => '0.9949',
+        'Term::ANSIColor' => 0,
+        'TAP::Harness' => '2.03',
+        'Class::Accessor::Fast' => 0,
+        'Module::Load' => 0,
     },
 
     no_index    => { 'directory' => [ 'inc' ] },

@@ -4,6 +4,8 @@ use warnings;
 use 5.010001;
 our $VERSION = '0.01';
 
+use Module::Load ();
+
 # plagger-ish context
 our $CONTEXT;
 sub context { $CONTEXT }
@@ -14,6 +16,7 @@ sub new {
     my %args = @_==1 ? %{$_[0]} : @_;
 
     my $self = bless {
+        blocks => [],
         %args,
     }, $class;
 
@@ -23,8 +26,10 @@ sub new {
             require Hok::Reporter::TAP;
             Hok::Reporter::TAP->new;
         } else {
-            require Hok::Reporter::Dot;
-            Hok::Reporter::Dot->new;
+            my $reporter = $ENV{HOK_REPORTER} || 'Dot';
+               $reporter = $reporter =~ s/^\+// ? $reporter : "Hok::Reporter::$reporter";
+            Module::Load::load($reporter);
+            $reporter->new();
         }
     };
 
@@ -32,6 +37,20 @@ sub new {
 }
 
 sub reporter { shift->{reporter} }
+
+sub run_subtest {
+    my ($self, $name, $code) = @_;
+    local $self->{blocks} = [@{$self->{blocks}}];
+    $self->reporter->before_subtest($name);
+    push @{$self->{blocks}}, $name;
+    $code->();
+    $self->reporter->after_subtest($name);
+}
+
+sub depth {
+    my $self = shift;
+    0+@{$self->{blocks}};
+}
 
 1;
 __END__
