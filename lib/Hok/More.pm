@@ -12,9 +12,7 @@ use parent qw/Exporter/;
 our @EXPORT = qw/subtest ok done_testing p is use_ok like unlike cmp_ok/;
 
 # TODO:
-# use_ok
 # difflet
-# is
 # note
 
 # Test::More functions:
@@ -34,9 +32,6 @@ our @EXPORT = qw/subtest ok done_testing p is use_ok like unlike cmp_ok/;
 #
 # Test::Exceptions functions:
 #    dies_ok lives_ok throws_ok lives_and
-
-# TODO:
-# cmp_ok
 
 sub subtest {
     my ($name, $code) = @_;
