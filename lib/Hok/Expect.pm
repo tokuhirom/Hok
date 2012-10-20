@@ -52,6 +52,17 @@ sub not: method {
     return Hok::Expect::Not->new($self->[0]);
 }
 
+sub empty {
+    my $self = shift;
+    if (ref $self->[0] eq 'ARRAY') {
+        Hok->context->is(0+@{$self->[0]}, 0);
+    } elsif (ref $self->[0] eq 'HASH') {
+        Hok->context->is(0+keys(%{$self->[0]}), 0);
+    } else {
+        Carp::croak("You cannot check 'empty' with this type...");
+    }
+}
+
 sub length :method {
     my ($self, $len) = @_;
     if (ref $self->[0] eq 'ARRAY') {
@@ -151,6 +162,17 @@ sub match {
     my ($self, $regexp) = @_;
     Carp::croak("Missing regexp for match. You man passed // instead of qr//?") unless defined $regexp;
     Hok->context->unlike($self->[0], $regexp);
+}
+
+sub empty {
+    my $self = shift;
+    if (ref $self->[0] eq 'ARRAY') {
+        Hok->context->isnt(0+@{$self->[0]}, 0);
+    } elsif (ref $self->[0] eq 'HASH') {
+        Hok->context->isnt(0+keys(%{$self->[0]}), 0);
+    } else {
+        Carp::croak("You cannot check 'empty' with this type...");
+    }
 }
 
 1;
