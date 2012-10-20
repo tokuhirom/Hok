@@ -6,6 +6,7 @@ use parent qw/Exporter/;
 use Hok;
 use Hok::Expect;
 use Carp ();
+use Try::Tiny;
 
 our @EXPORT = qw/expect describe runtests before before_each/;
 
@@ -19,7 +20,11 @@ sub describe {
 
     if ($EXECUTING) {
         $_->() for @BEFORE_EACH;
-        Hok->context->run_subtest($name, $code);
+        try {
+            Hok->context->run_subtest($name, $code);
+        } catch {
+            Hok->context->fail("Got an exception: $@");
+        };
     } else {
         push @blocks, [$name, $code];
     }
@@ -45,7 +50,11 @@ sub runtests {
     local $EXECUTING = 1;
     while (my $block = shift @blocks) {
         my ($name, $code) = @$block;
-        Hok->context->run_subtest($name, $code);
+        try {
+            Hok->context->run_subtest($name, $code);
+        } catch {
+            Hok->context->fail("Exception caused: $_");
+        };
     }
     Hok->context->done_testing;
 }

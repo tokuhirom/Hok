@@ -68,5 +68,7 @@ sub DESTROY {
     $self->finalize();
 }
 
+sub context { Hok->context }
+
 1;
 

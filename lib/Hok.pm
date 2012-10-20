@@ -19,6 +19,8 @@ sub new {
 
     my $self = bless {
         blocks => [],
+        success_count => 0,
+        fail_count    => 0,
         %args,
     }, $class;
 
@@ -61,9 +63,32 @@ sub depth {
     0+@{$self->{blocks}};
 }
 
+sub incr_success_count {
+    my $self = shift;
+    $self->{success_count}++;
+}
+
+sub incr_fail_count {
+    my $self = shift;
+    $self->{fail_count}++;
+}
+
+sub success_count { $_[0]->{success_count} }
+sub fail_count    { $_[0]->{fail_count} }
+
 sub ok {
     my $self = shift;
+    if ($_[0]) {
+        $self->incr_success_count;
+    } else {
+        $self->incr_fail_count;
+    }
     $self->reporter->ok(@_);
+}
+
+sub fail {
+    my $self = shift;
+    $self->ok(0, @_);
 }
 
 sub is {
