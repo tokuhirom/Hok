@@ -30,7 +30,7 @@ sub new {
             require Hok::Reporter::TAP;
             Hok::Reporter::TAP->new;
         } else {
-            my $reporter = $ENV{HOK_REPORTER} || 'Dot';
+            my $reporter = $ENV{HOK_REPORTER} || 'Spec';
                $reporter = $reporter =~ s/^\+// ? $reporter : "Hok::Reporter::$reporter";
             Module::Load::load($reporter);
             $reporter->new();

@@ -24,11 +24,9 @@ sub ok {
 
     if ($ok) {
         $self->print(colored(['green'], "\x{2713} "));
-        $self->{success}++;
     } else {
         # not ok.
         $self->print(colored(['red'], "\x{2716} "));
-        $self->{fail}++;
     }
     $self->print(colored(["BRIGHT_BLACK"], $msg));
     $self->print("\n");
@@ -51,10 +49,16 @@ sub finalize {
     return if $self->{finished}++;
 
     $self->print("\n\n");
-    if ($self->{fail}) {
-        $self->print(colored(['red bold'], "  \x{2716} $self->{fail} fails\n"));
+    if ($self->context->fail_count) {
+        $self->print(colored(['red bold'], sprintf("  \x{2716} %s fails\n", $self->context->fail_count)));
     }
-    $self->print(colored(['green bold'], "  \x{2713} $self->{success} tests completed"));
+    $self->print(
+        colored(
+            ['green bold'],
+            sprintf( "  \x{2713} %s tests completed",
+                $self->context->success_count )
+        )
+    );
     $self->print("\n\n");
 }
 

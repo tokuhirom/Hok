@@ -15,12 +15,6 @@ sub ok {
        $out .= $msg ? " - $msg" : '';
        $out .= "\n";
     $self->print($out);
-
-    if ($ok) {
-        $self->{success}++;
-    } else {
-        $self->{fail}++;
-    }
 }
 
 # final report.
@@ -29,10 +23,10 @@ sub finalize {
     return if $self->{finished}++;
 
     $self->print("1..$self->{tests}\n");
-    if ($self->{fail}) {
+    if ($self->context->fail_count) {
         $self->diag("");
-        $self->diag("   Succeed: $self->{success}");
-        $self->diag("   Failed:  $self->{fail}");
+        $self->diag(sprintf("   Succeed: %d", $self->context->success_count));
+        $self->diag(sprintf("   Failed:  %d", $self->context->fail_count));
     }
 }
 
