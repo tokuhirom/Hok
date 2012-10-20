@@ -23,7 +23,7 @@ sub describe {
         try {
             Hok->context->run_subtest($name, $code);
         } catch {
-            Hok->context->fail("Got an exception: $@");
+            Hok->context->fail("Got an exception: $_");
         };
     } else {
         push @blocks, [$name, $code];
