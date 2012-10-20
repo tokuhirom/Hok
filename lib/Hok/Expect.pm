@@ -54,7 +54,11 @@ sub not: method {
 
 sub length :method {
     my ($self, $len) = @_;
-    Hok->context->is(CORE::length($self->[0]), $len);
+    if (ref $self->[0] eq 'ARRAY') {
+        Hok->context->is(0+@{$self->[0]}, $len);
+    } else {
+        Hok->context->is(CORE::length($self->[0]), $len);
+    }
 }
 
 # expect(5).to.be.a('number');
