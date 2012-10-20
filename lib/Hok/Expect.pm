@@ -204,6 +204,16 @@ sub AUTOLOAD {
     }
 }
 
+sub greater_than {
+    my ($self, $stuff) = @_;
+    Hok->context->ok($self->[0] > $stuff);
+}
+
+sub less_than {
+    my ($self, $stuff) = @_;
+    Hok->context->ok($self->[0] < $stuff);
+}
+
 sub DESTROY { }
 
 package # hide from pause

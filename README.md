@@ -56,6 +56,7 @@ TODO
   * rename it(exam?)
   * after
   * after\_each
+  * $ENV{HOK\_GREP}
 
 Features
 --------
