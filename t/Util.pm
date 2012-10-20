@@ -38,8 +38,8 @@ sub make_results {
 
 sub test_results {
     is_deeply(
-        result(),
-        make_results(@_),
+        [map { $_->{result} } @{result()->[0]}],
+        [@_]
     ) or report();
 }
 

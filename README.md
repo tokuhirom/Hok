@@ -54,6 +54,8 @@ TODO
   * more testing functions
   * fork safe
   * rename it(exam?)
+  * after
+  * after\_each
 
 Features
 --------

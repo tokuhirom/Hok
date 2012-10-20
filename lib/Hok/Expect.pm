@@ -5,6 +5,7 @@ use utf8;
 
 use Hok;
 use Carp ();
+use Try::Tiny;
 
 use constant {
     ONLY => 1,
@@ -30,6 +31,10 @@ sub equal {
 sub ok {
     my $self = shift;
     Hok->context->ok($self->[0]);
+}
+
+sub fail {
+    Hok->context->fail();
 }
 
 sub to {
@@ -145,12 +150,55 @@ sub contain {
     }
 }
 
+sub throw_exception {
+    my $self = shift;
+    if (@_) {
+        if (ref $_[0] eq 'Regexp') {
+            my $re = shift;
+            my $err;
+            try {
+                $self->[0]->();
+            } catch {
+                $err++;
+                Hok->context->like($_, $re);
+            };
+            unless ($err) {
+                Hok->context->fail("Don't throws");
+            }
+        } elsif (ref $_[0] eq 'CODE') {
+            my $code = shift;
+            my $err;
+            try {
+                $self->[0]->();
+            } catch {
+                $err++;
+                $code->($_);
+            };
+            unless ($err) {
+                Hok->context->fail("Don't throws");
+            }
+        } else {
+            Carp::croak "Unknown : " . ref $_[0];
+        }
+    } else {
+        my $err;
+        try {
+            $self->[0]->();
+        } catch {
+            $err++;
+        };
+        Hok->context->ok($err);
+    }
+}
+
 our $AUTOLOAD;
 sub AUTOLOAD {
     my $self = shift;
     $AUTOLOAD =~ s/.*:://g;
     if ($AUTOLOAD =~ s/^(to|have|be|not|only)_//) {
-        $self->$1->$AUTOLOAD(@_);
+        my $meth = $1;
+        my $auto = $AUTOLOAD;
+        $self->$meth->$auto(@_);
     } else {
         Carp::croak("Unknown method: $AUTOLOAD");
     }
@@ -160,6 +208,8 @@ sub DESTROY { }
 
 package # hide from pause
     Hok::Expect::Not;
+
+use Try::Tiny;
 
 sub ONLY() { Hok::Expect::ONLY }
 
@@ -235,6 +285,21 @@ sub key {
     } else {
         Hok->context->fail();
         Hok->context->diag("This is not a hash.");
+    }
+}
+
+sub throw_exception {
+    my $self = shift;
+    if (@_) {
+        Carp::croak("Invalid method calling. You cannot call not->throw_exception with arguments");
+    } else {
+        my $err;
+        try {
+            $self->[0]->();
+        } catch {
+            $err++;
+        };
+        Hok->context->ok(!$err);
     }
 }
 

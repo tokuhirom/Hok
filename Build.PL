@@ -21,6 +21,7 @@ my $build = Module::Build->new(
         'Class::Accessor::Lite' => 0,
         'Module::Load' => 0,
         'Class::Load' => 0,
+        'Try::Tiny' => 0,
     },
 
     no_index    => { 'directory' => [ 'inc' ] },
