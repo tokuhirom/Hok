@@ -9,7 +9,7 @@ use Hok;
 use Test::More;
 use Data::Dumper;
 
-our @EXPORT = qw/result report make_results/;
+our @EXPORT = qw/result report make_results test_results/;
 
 Hok->bootstrap(
     reporter => Hok::Reporter::Test->new(),
@@ -34,6 +34,13 @@ sub make_results {
             } @_
         ]
     ]
+}
+
+sub test_results {
+    is_deeply(
+        result(),
+        make_results(@_),
+    ) or report();
 }
 
 1;

@@ -8,6 +8,7 @@ use Carp ();
 
 sub new {
     my $class = shift;
+    @_==1 or Carp::croak("Too much args");
     bless [@_], $class;
 }
 
@@ -69,6 +70,23 @@ sub match {
     my ($self, $regexp) = @_;
     Carp::croak("Missing regexp for match. You man passed // instead of qr//?") unless defined $regexp;
     Hok->context->like($self->[0], $regexp);
+}
+
+# expect([1, 2]).to.contain(1);
+# expect('hello world').to.contain('world');
+sub contain {
+    my ($self, $stuff) = @_;
+    if (ref $self->[0] eq 'ARRAY') {
+        my $test = sub {
+            for my $m (@{$self->[0]}) {
+                return 1 if $m eq $stuff;
+            }
+            return 0;
+        }->();
+        Hok->context->ok($test);
+    } else {
+        Hok->context->ok(index($self->[0], $stuff)>=0);
+    }
 }
 
 our $AUTOLOAD;
