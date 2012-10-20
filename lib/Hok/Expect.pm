@@ -4,6 +4,7 @@ use warnings;
 use utf8;
 
 use Hok;
+use Carp ();
 
 sub new {
     my $class = shift;
@@ -26,11 +27,6 @@ sub ok {
     Hok->context->ok($self->[0]);
 }
 
-sub not_ok {
-    my $self = shift;
-    Hok->context->ok(!$self->[0]);
-}
-
 sub to {
     my $self = shift;
     $self;
@@ -50,7 +46,7 @@ sub have {
     $self;
 }
 
-sub not {
+sub not: method {
     my $self = shift;
     return Hok::Expect::Not->new($self->[0]);
 }
@@ -71,8 +67,22 @@ sub a {
 
 sub match {
     my ($self, $regexp) = @_;
+    Carp::croak("Missing regexp for match. You man passed // instead of qr//?") unless defined $regexp;
     Hok->context->like($self->[0], $regexp);
 }
+
+our $AUTOLOAD;
+sub AUTOLOAD {
+    my $self = shift;
+    $AUTOLOAD =~ s/.*:://g;
+    if ($AUTOLOAD =~ s/^(to|have|be|not)_//) {
+        $self->$1->$AUTOLOAD(@_);
+    } else {
+        Carp::croak("Unknown method: $AUTOLOAD");
+    }
+}
+
+sub DESTROY { }
 
 package # hide from pause
     Hok::Expect::Not;
@@ -81,6 +91,8 @@ sub new {
     my $class = shift;
     bless [@_], $class;
 }
+
+sub DESTROY { }
 
 sub be {
     my $self = shift;
@@ -111,6 +123,12 @@ sub equal {
     my $expect = shift;
 
     Hok->context->isnt($self->[0], $expect);
+}
+
+sub match {
+    my ($self, $regexp) = @_;
+    Carp::croak("Missing regexp for match. You man passed // instead of qr//?") unless defined $regexp;
+    Hok->context->unlike($self->[0], $regexp);
 }
 
 1;
