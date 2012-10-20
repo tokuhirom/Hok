@@ -6,10 +6,14 @@ use utf8;
 use Hok;
 use Carp ();
 
+use constant {
+    ONLY => 1,
+};
+
 sub new {
     my $class = shift;
     @_==1 or Carp::croak("Too much args");
-    bless [@_], $class;
+    bless [$_[0]], $class;
 }
 
 sub equal {
@@ -87,6 +91,43 @@ sub match {
     Hok->context->like($self->[0], $regexp);
 }
 
+sub only {
+    my $self = shift;
+    @_==0 or Carp::croak();
+
+    $self->[ONLY()]++;
+    $self;
+}
+
+sub key {
+    my ($self, $key) = (shift, shift);
+    Carp::croak("Invalid arguments for key") if @_;
+    Carp::croak("Invalid arguments for key") if not defined $key;
+
+    if (ref $self->[0] eq 'HASH') {
+        Hok->context->ok(!!exists($self->[0]->{$key}));
+    } else {
+        Hok->context->fail();
+        Hok->context->diag("This is not a hash.");
+    }
+}
+
+sub keys {
+    my ($self, @key) = (shift, @_);
+    Carp::croak("You may forgot 'only'?") unless $self->[ONLY];
+
+    if (ref $self->[0] eq 'HASH') {
+        my %copy = %{$self->[0]};
+        for (@key) {
+            delete $copy{$_};
+        }
+        Hok->context->ok(keys %copy == 0);
+    } else {
+        Hok->context->fail();
+        Hok->context->diag("This is not a hash.");
+    }
+}
+
 # expect([1, 2]).to.contain(1);
 # expect('hello world').to.contain('world');
 sub contain {
@@ -108,7 +149,7 @@ our $AUTOLOAD;
 sub AUTOLOAD {
     my $self = shift;
     $AUTOLOAD =~ s/.*:://g;
-    if ($AUTOLOAD =~ s/^(to|have|be|not)_//) {
+    if ($AUTOLOAD =~ s/^(to|have|be|not|only)_//) {
         $self->$1->$AUTOLOAD(@_);
     } else {
         Carp::croak("Unknown method: $AUTOLOAD");
@@ -119,6 +160,8 @@ sub DESTROY { }
 
 package # hide from pause
     Hok::Expect::Not;
+
+sub ONLY() { Hok::Expect::ONLY }
 
 sub new {
     my $class = shift;
@@ -151,6 +194,14 @@ sub ok {
     Hok->context->ok(!$self->[0]);
 }
 
+sub only {
+    my $self = shift;
+    @_==0 or Carp::croak();
+
+    $self->[ONLY()]++;
+    $self;
+}
+
 sub equal {
     my $self = shift;
     my $expect = shift;
@@ -172,6 +223,18 @@ sub empty {
         Hok->context->isnt(0+keys(%{$self->[0]}), 0);
     } else {
         Carp::croak("You cannot check 'empty' with this type...");
+    }
+}
+
+sub key {
+    my ($self, $key) = (shift, shift);
+    Carp::croak("You may forgot 'only'?") unless $self->[ONLY];
+
+    if (ref $self->[0] eq 'HASH') {
+        Hok->context->ok(not exists $self->[0]->{$key});
+    } else {
+        Hok->context->fail();
+        Hok->context->diag("This is not a hash.");
     }
 }
 
