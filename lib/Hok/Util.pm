@@ -4,6 +4,7 @@ use warnings;
 use utf8;
 use Cwd;
 use Data::Dumper;
+use File::Spec ();
 
 # ref. https://github.com/cho45/Test-Name-FromLine/pull/2
 our $BASE_DIR = getcwd();
