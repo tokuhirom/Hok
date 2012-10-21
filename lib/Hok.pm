@@ -4,8 +4,8 @@ use warnings;
 use 5.010001;
 our $VERSION = '0.01';
 
-use Module::Load ();
 use Carp ();
+use Class::Load ();
 
 our @CARP_NOT = qw(Hok::Spec Hok::More Hok::Expect);
 
@@ -32,7 +32,7 @@ sub new {
         } else {
             my $reporter = $ENV{HOK_REPORTER} || 'Spec';
                $reporter = $reporter =~ s/^\+// ? $reporter : "Hok::Reporter::$reporter";
-            Module::Load::load($reporter);
+            Class::Load::load_class($reporter);
             $reporter->new();
         }
     };

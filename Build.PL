@@ -18,7 +18,6 @@ my $build = Module::Build->new(
         'Term::ANSIColor' => 0,
         'TAP::Harness' => '2.03',
         'Class::Accessor::Lite' => 0,
-        'Module::Load' => 0,
         'Class::Load' => 0,
         'Try::Tiny' => 0,
         'Data::Difflet' => 0,
