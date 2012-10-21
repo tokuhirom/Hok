@@ -6,6 +6,7 @@ use utf8;
 use Test::Builder;
 use Hok;
 use Class::Load ();
+use Try::Tiny;
 
 use parent qw/Exporter/;
 
@@ -34,7 +35,11 @@ our @EXPORT = qw/subtest ok done_testing p is use_ok like unlike cmp_ok note dia
 
 sub subtest {
     my ($name, $code) = @_;
-    Hok->context->run_subtest($name, $code);
+    try {
+        Hok->context->run_subtest($name, $code);
+    } catch {
+        Hok->context->fail("Exception caused: $_");
+    };
 }
 
 sub use_ok {
