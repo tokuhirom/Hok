@@ -23,6 +23,8 @@ sub equal {
 
     Hok->context->is($self->[0], $expect);
 }
+*is = *equal;
+*equals = *equal;
 
 # expect(1).to.be.ok();
 # expect(true).to.be.ok();

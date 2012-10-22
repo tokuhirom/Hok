@@ -13,8 +13,10 @@ my $hok = Hok->bootstrap(
     package sandbox;
     use Hok::Spec;
     describe("Simple", sub {
-        expect(5963)->equal(5963);
-        expect(4649)->equal(5963);
+        expect(5963)->equals(5963);
+        expect(4649)->equals(5963);
+        expect(4649)->to_be(4649);
+        expect(4649)->is(4649);
     });
     runtests;
 }
@@ -29,7 +31,15 @@ Test::More::is_deeply(
             {
                 'message' => undef,
                 'result'  => 0
-            }
+            },
+            {
+                'message' => undef,
+                'result'  => 1
+            },
+            {
+                'message' => undef,
+                'result'  => 1
+            },
         ],
     ]
 ) or Test::More::note Dumper($hok->reporter->result);

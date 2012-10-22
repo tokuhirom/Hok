@@ -57,6 +57,7 @@ TODO
   * after
   * after\_each
   * $ENV{HOK\_GREP}
+  * doctest?
 
 Features
 --------
