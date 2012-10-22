@@ -8,7 +8,7 @@ use Hok::Expect;
 use Carp ();
 use Try::Tiny;
 
-our @EXPORT = qw/expect describe runtests before before_each/;
+our @EXPORT = qw/expect describe it runtests before before_each/;
 
 our $EXECUTING;
 our @BEFORE_EACH;
@@ -29,6 +29,8 @@ sub describe {
         push @blocks, [$name, $code];
     }
 }
+
+*it = *describe;
 
 sub expect {
     my $stuff = shift;
