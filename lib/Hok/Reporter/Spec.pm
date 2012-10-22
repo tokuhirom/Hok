@@ -35,12 +35,11 @@ sub ok {
 sub before_subtest {
     my ($self, $name) = @_;
     my $depth = Hok->context->depth + 1;
-    $self->print("\n" . ("  " x $depth) . $name . "\n\n");
+    $self->print("" . ("  " x $depth) . $name . "\n");
 }
 
 sub after_subtest {
     my ($self, $name) = @_;
-    $self->print("\n\n");
 }
 
 # final report.
